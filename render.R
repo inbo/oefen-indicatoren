@@ -1,4 +1,3 @@
-renv::restore()
 library(rmarkdown)
 library(here)
 render_all <- function() {
