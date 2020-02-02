@@ -1,0 +1,115 @@
+---
+title: "Oppervlakte met effectief natuurbeheer"
+date: 2020-02-19T10:00:00+01:00
+category: ["category 1", "category 1"]
+tags: ["tag 1", "tag 2", "tag 3"]
+lang: "nl"
+tab: "indicator" 
+output: 
+  html_document:
+    self_contained: false
+    keep_md: true
+    lib_dir: libs
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE, fig.width = 10, fig.height = 7
+)
+library(git2rdata)
+library(plotly)
+library(tidyverse)
+library(INBOtheme)
+library(htmlwidgets)
+set.seed(20190920)
+setWidgetIdSeed(20190920)
+options(htmlwidgets.TOJSON_ARGS = list(pretty = TRUE))
+```
+
+```{r inlezen-gegevens}
+root <- repository("../..")
+gegevens <- read_vc("source/natuurbeheer/oppervlakte", root)
+max_length <- 20
+levels(gegevens$Type) %>%
+  str_remove_all("\\*") -> levels(gegevens$Type)
+levels(gegevens$Type) %>%
+  str_length() %>%
+  `>`(max_length) -> te_lang
+levels(gegevens$Type)[te_lang] %>%
+  str_split(" ") -> woorden
+levels(gegevens$Type)[te_lang] <- sapply(
+  woorden,
+  function(i) {
+    tekst <- character(0)
+    while (length(i)) {
+      z <- cumsum(str_length(i)) + seq_along(i) - 1
+      samen <- which(z < max_length)
+      tekst <- c(tekst, paste(i[samen], collapse = " "))
+      i <- i[-samen]
+    }
+    paste(tekst, collapse = "\n")
+  }
+)
+gegevens %>%
+  complete(Jaartal, Type, fill = list(Oppervlakte = 0)) %>%
+  mutate(Type = reorder(Type, -Oppervlakte, max)) -> gegevens
+```
+
+## Definitie
+
+Deze indicator omvat de Vlaamse natuur- en bosreservaten, de natuurdomeinen met een goedgekeurd beheerplan, de erkende natuur- en bosreservaten, de militaire domeinen met een natuurprotocol, de domeinbossen en bossen in eigendom van derden met een goedgekeurd beheerplan conform de criteria duurzaam bosbeheer, de parken in eigendom van de Vlaamse overheid of van derden met een goedgekeurd beheerplan conform de principes van harmonisch park- en groenbeheer, en de gebieden met natuurbeheerplannen van het type 2, 3 of 4.
+
+### Totale oppervlakte
+
+```{r oppervlakte-totaal, fig.cap = "Evolutie van de totale oppervlakte."}
+gegevens %>%
+  group_by(Jaartal) %>%
+  summarise(Oppervlakte = sum(Oppervlakte)) -> totaal
+p <- ggplot(totaal, aes(x = Jaartal, y = Oppervlakte)) +
+  geom_line() +
+  ylim(c(0, NA)) +
+  ylab("Totale oppervlakte (ha)") +
+  theme(
+    axis.title.x = element_blank()
+  )
+ggplotly(p)
+```
+
+### Oppervlakte per type
+
+```{r oppervlakte-type, fig.cap = "Evolutie van de oppervlakte per type."}
+p <- ggplot(gegevens, aes(x = Jaartal, y = Oppervlakte, colour = Type)) +
+  geom_line() +
+  ylim(c(0, NA)) + 
+  ylab("Oppervlakte (ha)") +
+  theme(
+    axis.title.x = element_blank()
+  )
+ggplotly(p)
+```
+
+## Bespreking 
+
+In 2018 bedroeg de oppervlakte 'met effectief natuurbeheer' 89.202 ha. 
+Dat is een toename met 4.748 ha t.o.v. 2017. 
+De oppervlakte nam in 2018 toe bij de bossen in eigendom van derden met een goedgekeurd beheerplan (+ 2097 ha) en de erkende natuurreservaten (+ 557 ha). 
+Nieuw sinds 2018 zijn de gebieden met een natuurbeheerplan type 2 (+ 1312 ha), 3 (+ 696 ha) en 4 (+ 382 ha). 
+De afname van de oppervlakte Vlaams natuurreservaat (- 74 ha) en domeinbossen met uitgebreid bosbeheerplan (- 222 ha) is het gevolg van de omzetting ervan naar deze nieuwe gebiedscategorieën.
+
+Elk gebied opgenomen in deze indicator beschikt over een goedgekeurd beheerplan. 
+De mate waarin het beheer er gericht is op het behalen van natuurdoelen kan echter sterk verschillen. 
+In sommige gebieden met goedgekeurd beheerplan kan de natuurfunctie neven- of ondergeschikt zijn aan de economische of de sociale functie. 
+Voor meer info hierover verwijzen we naar een INBO advies over dit onderwerp (INBO.A.2011.14).
+
+Vanaf 2018 worden de verschillende types beheerplannen stelselmatig geïntegreerd tot één nieuw type, het natuurbeheerplan (BVR van 14/07/2017). 
+Daarin worden vier ambitieniveaus onderscheiden. 
+In terreinen van type 1 staat het behoud van de aanwezige natuurkwaliteit voorop. 
+Omdat hier geen specifiek natuurstreefbeeld tot doel gesteld wordt, nemen we deze categorie niet op in de indicator. 
+In terreinen van het type 2, 3 en 4 wordt een hogere natuurkwaliteit nagestreefd. 
+Bij type 2 stelt de beheerder over minstens 25% van de oppervlakte van het terrein het realiseren van één of meerdere natuurstreefbeelden tot doel. 
+Bij types 3 en 4 geldt dit voor de volledige oppervlakte. Type 4 staat daarbij synoniem voor 'natuurreservaat'. 
+Hier geldt bijkomend een erfdienstbaarheid van duurzaam gebruik en langdurig beheer van het terrein als natuurreservaat.
+
+Tegen 2023 zullen alle beheerplannnen omgezet worden naar de nieuwe natuurbeheerplannen. 
+Er zal dan een nauwkeurigere analyse van de oppervlakte met effectief natuurbeheer mogelijk zijn.
