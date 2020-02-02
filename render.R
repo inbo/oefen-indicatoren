@@ -6,6 +6,25 @@ if (!require(here)) {
   install.packages("here")
   library(here)
 }
+if (!require(git2rdata)) {
+  install.packages("git2rdata")
+}
+if (!require(plotly)) {
+  install.packages("plotly")
+}
+if (!require(tidyverse)) {
+  install.packages("tidyverse")
+}
+if (!require(INBOtheme)) {
+  if (!require(remotes)) {
+    install.packages("remotes")
+  }
+  remotes::install_github("inbo/INBOtheme")
+}
+if (!require(htmlwidgets)) {
+  install.packages("htmlwidgets")
+}
+
 render_all <- function() {
   to_do <- list.files(here("source"), pattern = ".rmd", ignore.case = TRUE,
                       recursive = TRUE, full.names = TRUE)
