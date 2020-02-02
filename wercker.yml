@@ -1,0 +1,11 @@
+build:
+  box: inbobmk/indicatoren
+  steps:
+  - script:
+      name: render
+      code: |
+        Rscript "render.R"
+        if [[ $? -ne 0 ]]; then
+          fail "Failed to render indicators!"
+        fi
+        success "Indicators successfull rendered!"
