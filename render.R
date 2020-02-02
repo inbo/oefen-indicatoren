@@ -1,5 +1,11 @@
-library(rmarkdown)
-library(here)
+if (!require(rmarkdown)) {
+  install.packages("rmarkdown")
+  library(rmarkdown)
+}
+if (!require(here)) {
+  install.packages("here")
+  library(here)
+}
 render_all <- function() {
   to_do <- list.files(here("source"), pattern = ".rmd", ignore.case = TRUE,
                       recursive = TRUE, full.names = TRUE)
