@@ -13,9 +13,9 @@ Gebruik uitsluitend oude versies (reeds gepubliceerde) van indicatoren!
 
 ## Voorgestelde workflow
 
-1. Maak een issue aan waarin je aankondigd welke indicator je gaat bijwerken/toevoegen en geef hierin aan wie er aan meewerkt
+1. Maak een issue aan waarin je aankondigt welke indicator je gaat bijwerken/toevoegen en geef hierin aan wie er aan meewerkt
 1. Maak een nieuwe branch voor deze indicator. Pas enkel dingen aan die relevant zijn voor deze indicator.
-1. Push de branch naar GitHub en maak er een pull request van. Vermeldt het betrokken issue en geef aan wie de volgende is die aanpassingen moet doen.
+1. Push de branch naar GitHub en maak er een pull request van. Vermeld het betrokken issue en geef aan wie de volgende is die aanpassingen moet doen.
 1. Werk verder in deze branch.
 1. Geef aan wanneer de indicator klaar is voor review.
 1. De reviewers geven hun commentaar waarop de verantwoordelijke van de indicator de nodige aanpassingen doet.
