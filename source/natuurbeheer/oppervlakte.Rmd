@@ -58,6 +58,8 @@ gegevens %>%
 
 ## Definitie
 
+Zin voor de tweede keer toegevoegd
+
 Deze indicator omvat de Vlaamse natuur- en bosreservaten, de natuurdomeinen met een goedgekeurd beheerplan, de erkende natuur- en bosreservaten, de militaire domeinen met een natuurprotocol, de domeinbossen en bossen in eigendom van derden met een goedgekeurd beheerplan conform de criteria duurzaam bosbeheer, de parken in eigendom van de Vlaamse overheid of van derden met een goedgekeurd beheerplan conform de principes van harmonisch park- en groenbeheer, en de gebieden met natuurbeheerplannen van het type 2, 3 of 4.
 
 ### Totale oppervlakte
