@@ -321,4 +321,4 @@ plot_CTI_1950_abs_hab <- CTI_1950_abs_hab %>%
   #scale_x_discrete(breaks = as.character(seq(1950, 2020, by = 10))) +
   labs(x = "Jaar", y = "Community Temperature Index (°C)") +
   facet_wrap(~habitatgroep)
-plot_CTI_1950_rel_hab
+plot_CTI_1950_abs_hab
