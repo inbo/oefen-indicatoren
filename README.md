@@ -1,5 +1,7 @@
 # oefen-indicatoren
 
+Zinnetje toegevoegd
+
 In deze repository kan je het beheer van de indicatoren oefenen. 
 Gebruik uitsluitend oude versies (reeds gepubliceerde) van indicatoren!
 
