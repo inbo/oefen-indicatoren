@@ -226,7 +226,95 @@ CTI_1950_rel_hab <- bind_rows(CTI_1950_rel_bos, CTI_1950_rel_urb, CTI_1950_rel_g
   mutate(cti_se = (cti_upr - cti_est)/qnorm(1 - 0.05/2), Jaar = as.integer(Jaar)) %>%
   arrange(Jaar, habitatgroep)
 
+# Calculate absolute CTI results per habitat
+CTI_1950_abs_bos <- calc_cti(
+  traitdata = flora_tpi_effects_bos,
+  yeareffectdata = yeareffects_1950_tpi_bos,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "bos")
+
+CTI_1950_abs_urb <- calc_cti(
+  traitdata = flora_tpi_effects_urb,
+  yeareffectdata = yeareffects_1950_tpi_urb,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "urbaan")
+
+CTI_1950_abs_gras <- calc_cti(
+  traitdata = flora_tpi_effects_gras,
+  yeareffectdata = yeareffects_1950_tpi_gras,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "grasland")
+
+CTI_1950_abs_moeras <- calc_cti(
+  traitdata = flora_tpi_effects_moeras,
+  yeareffectdata = yeareffects_1950_tpi_moeras,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "moeras")
+
+CTI_1950_abs_akker <- calc_cti(
+  traitdata = flora_tpi_effects_akker,
+  yeareffectdata = yeareffects_1950_tpi_akker,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "akker")
+
+CTI_1950_abs_heide <- calc_cti(
+  traitdata = flora_tpi_effects_heide,
+  yeareffectdata = yeareffects_1950_tpi_heide,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "heide")
+
+CTI_1950_abs_zout <- calc_cti(
+  traitdata = flora_tpi_effects_zout,
+  yeareffectdata = yeareffects_1950_tpi_zout,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "brakke tot zilte milieus")
+
+CTI_1950_abs_duin <- calc_cti(
+  traitdata = flora_tpi_effects_duin,
+  yeareffectdata = yeareffects_1950_tpi_duin,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "duinen")
+
+CTI_1950_abs_zoet <- calc_cti(
+  traitdata = flora_tpi_effects_zoet,
+  yeareffectdata = yeareffects_1950_tpi_zoet,
+  nrep = 1000,
+  interval = 0.95,
+  relatief = FALSE) %>%
+  mutate(habitatgroep = "zoet water")
+
+CTI_1950_abs_hab <- bind_rows(CTI_1950_abs_bos, CTI_1950_abs_urb, CTI_1950_abs_gras, CTI_1950_abs_moeras, CTI_1950_abs_akker, CTI_1950_abs_heide, CTI_1950_abs_zout, CTI_1950_abs_duin, CTI_1950_abs_zoet) %>%
+  mutate(cti_se = (cti_upr - cti_est)/qnorm(1 - 0.05/2), Jaar = as.integer(Jaar)) %>%
+  arrange(Jaar, habitatgroep)
+
+# Plot results per habitat
+
 plot_CTI_1950_rel_hab <- CTI_1950_rel_hab %>%
+  ggplot(aes(x = Jaar, y = cti_est)) +
+  stat_fan(aes(link_sd = cti_se)) +
+  geom_line(size = 1.2) +
+  #scale_x_discrete(breaks = as.character(seq(1950, 2020, by = 10))) +
+  labs(x = "Jaar", y = "Community Temperature Index (°C)") +
+  facet_wrap(~habitatgroep)
+plot_CTI_1950_rel_hab
+
+plot_CTI_1950_abs_hab <- CTI_1950_abs_hab %>%
   ggplot(aes(x = Jaar, y = cti_est)) +
   stat_fan(aes(link_sd = cti_se)) +
   geom_line(size = 1.2) +
