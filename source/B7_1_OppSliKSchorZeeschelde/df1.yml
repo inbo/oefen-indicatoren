@@ -1,0 +1,21 @@
+..generic:
+  git2rdata: '0.1'
+  optimize: yes
+  NA string: NA
+  hash: 3bdb7bc39919c741e0aa9aa43077a5153d68fe66
+  data_hash: 943ae6ec92959f33f33d8d8902b5d8250de017c5
+Jaar:
+  class: integer
+zone:
+  class: factor
+  labels:
+  - slik
+  - subtidaal
+  - supralitoraal
+  index:
+  - 1
+  - 2
+  - 3
+  ordered: no
+Oppervlakte:
+  class: numeric

@@ -29,4 +29,4 @@ vignettes/*.pdf
 libs
 publish
 .Rproj.user
-B7_1_OppSliKSchorZeeschelde
+*.pdf

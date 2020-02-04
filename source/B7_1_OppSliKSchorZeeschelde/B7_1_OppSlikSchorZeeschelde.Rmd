@@ -1,0 +1,120 @@
+---
+title: "B7_1_OppSlikSchorZeeschelde"
+date: 2020-02-19T10:00:00+01:00
+header-includes: 
+- \usepackage{float} # 'float' package
+- \floatplacement{figure}{H} # Elke figuur met fig.pos = "h"
+category: ["category 1", "category 1"] # Kiezen uit vaste lijst categorin
+tags: ["Bos", "Toestand", "tag 3"] # Vrij te kiezen
+lang: "nl"
+tab: "indicator" 
+output: pdf_document
+---
+```{r setup, include=FALSE}
+## Installeren packages
+# Alleen nodig als ze nog niet genstalleerd zijn (verwijder # voor install.packages en remotes::install_)
+#######################
+# Via de R repository #
+#######################
+if (!require(plotly)) {
+  install.packages("plotly")
+  stopifnot(require(plotly))
+}
+# install.packages(c("git2rdata", "plotly", "tidyverse", "htmlwidgets", "DT", "purr", "tinytex", "processx")) 
+# ik kreeg een foutmelding dat processx verouderd was -> toen ik dat installeerde marcheerde alles
+# Installeer tinytex om pdf's te maken via Markdown (opgelet: duurt lang omdat de eerste regel al je packages update) -> Tip: de 5 onderstaande regels selecteren en dan Ctrl-Shift-C drukken en de hashtags verdwijnen
+# if (length(find.package("tinytex", quiet = TRUE)) == 0) {
+#  install.packages("tinytex")
+#  tinytex::install_tinytex()
+# }
+# #setup for tinytex
+# tinytex::tlmgr_install(c(
+#   'inconsolata', 'times', 'tex', 'helvetic', 'dvips'
+# ))
+# tinytex::tlmgr_conf(
+#   c("auxtrees", "add", system.file("local_tex", package = "INBOmd"))
+# )
+# tinytex::tlmgr_install(c("hyphen-dutch", "hyphen-french"))
+########################################
+# Aparte INBO-packages via INBO-github #
+########################################
+# remotes::install_github("inbo/INBOmd", dependencies = TRUE)
+# remotes::install_github("inbo/effectclass") # -> als R komt vragen om andere packages te updaten -> niets updaten
+# remotes::install_github("tidyverse/googlesheets4") # Eerst purrr installeren -> niets updaten
+# remotes::install_github("inbo/INBOtheme")
+# Packages activeren
+library(knitr)
+opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tinytex)
+library(git2rdata)
+library(plotly)
+library(tidyverse)
+library(effectclass)
+library(INBOtheme)
+library(htmlwidgets)
+library(DT) # Interactieve tabellen
+set.seed(20190920)
+setWidgetIdSeed(20190920)
+options(htmlwidgets.TOJSON_ARGS = list(pretty = TRUE))
+```
+```{r, inlezen-gegevens}
+root <- "." #root is een functie van Thierry die naar verwijst naar het project waarin je werkt (relatieve verwijzing) "."= in dit project, ".."= een mapje hoger dan dit project
+# gegevens <- read_vc("Data", root = root)
+# read_tsv = voor tab separated files, read_csv = voor comma separated files
+gegevens<-read.csv2("./data/Ecotoop_ruwedata.csv")
+```
+```{r dataframe aanmaken, include=FALSE}
+df <- data.frame(gegevens)
+df <- df %>%
+mutate(opp_ha= Opp_vierk_m / 10000) 
+str(df)
+```
+## Definitie
+Deze indicator toont de verandering in oppervlakte (ha) van het slik, schor, en het subtidale deel van de Zeeschelde sinds 2010.
+## Bespreking
+Het slik is de zone de zone tussen de laagwaterlijn en schor.
+Het schor de zone begroeid met vegetatie kenmerkend voor estuariene of fluviatiele omstandigheden. 
+ Het supralitoraal vertoont een toename in 2016 tov 2010 van 101,24 ha. 
+ Dit is voornamelijk het gevolg van natuurontwikkelingsprojecten (ontpolderingen, aantakkingen, het Bazels GGG en dijkverleggingen).
+ Het slik is vertoont slechts een kleinere toename van 22,95 ha.
+```{r grafiek, echo =  FALSE, fig.cap = "Oppervlakte Slik en schor.", fig.pos = "H"}
+# Een klein beetje basisuitleg over ggplot:
+# in de eerste lijn geef je aan welke dataset je gebruikt ('gegevens') en wat de kolommen zijn voor de x en y
+# vanaf lijn 2 geef je aan welk type grafiek je wil maken via een geom_ (in dit geval een puntengrafiek met een smoother). Voor een barplot gebruik je geom_bar()
+# titels van de assen kan je specificeren met labs(x = "dit is de x-as", y = "en dit de y-as")
+# de opmaak van de assenlabels kan aangepast worden via scale_x/y_continuous -> via het scales packages kan het formaat van de getallen aangepast worden
+ggplot(data=df, aes(x=jaar, y=log(opp_ha ), group=Ecotoop, color=Ecotoop)) +
+  geom_line() +
+  geom_point()+
+  labs(x = "Jaar", y = "Log(Oppervlakte (ha))")
+   # Voor statische grafiek
+# ggplotly(p) # Voor interactieve grafiek
+```
+```{r interactieve-tabel}
+# Als je een tabel wil invoegen (alles hieronder selecteren en CTRL-Shift-C om hashtags weg te doen)
+# gegevens %>%
+#   arrange(Jaar) %>%
+#   datatable(
+#     caption = "Aandeel beschadigde beuken", 
+#     rownames = FALSE,
+#     options = list(scrollX = TRUE,
+#                          fixedColumns = list(leftColumns = 2),
+#                          scrollY = "300px",
+#                          scrollCollapse = TRUE,
+#                          paging = FALSE,
+#                          falsescrollY = "200px",
+#                          fixedHeader = FALSE))
+```
+
+## Data en analyse
+Op welke dataset is de analyse gebaseerd?
+Voor deze analyse hebben we gebruik gemaakt van de ecotopenkaart 2010, 2013 en 2016. Deze kaart wordt opgemaakt in het kader van MONEOS, Geïntegreerde monitoring van de Schelde. 
+
+Welke analyses heb je gedaan (hoofdlijnen)?
+De oppervlakten van de ecotopenklassen 'subtidaal' werd opgesplitst in diep subtidaal (>2m), en ondiep subtidaal. Slik bestaat uit alle intertidale ecotoopklassen + potentiële pionierszone.  
+
+## Referenties
+Van Ryckegem G., Van Braeckel A., Elsen R., Speybroeck J., Vandevoorde B. Mertens W. Breine J., Spanoghe G., BezdenjesnjiO., Buerms D., De Beukelaer J., De Regge N., Hessel K., Lefranc C., Soors J., Terrie T., Van Lierop F.& Van den Bergh E. (2018) MONEOS- Ge?ntegreerd datarapport INBO: Toestand Zeeschelde 2017: monitoringsoverzicht en 1ste lijnsrapportage Geomorfologie, diversiteit Habitats en diversiteit Soorten. Rapporten van het Instituut voor Natuur- en Bosonderzoek 2018 (74). Instituut voor Natuur- en Bosonderzoek, Brussel.
+
+- Basisdata: [Ecotoop_ruwedata.csv](Fysiotopen_ruwedata.tsv)
+- Metadata basisdata: [Ecotoop_ruwedata.yml](Fysiotopen_ruwedata.yml)
