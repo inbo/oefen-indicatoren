@@ -1,6 +1,6 @@
 ---
 title: "Oppervlakte met effectief natuurbeheer"
-date: 2020-02-19T10:00:00+01:00
+date: 2020-03-01T10:00:00+01:00
 category: ["category 1", "category 1"]
 tags: ["tag 1", "tag 2", "tag 3"]
 lang: "nl"
@@ -68,14 +68,13 @@ Deze indicator omvat de Vlaamse natuur- en bosreservaten, de natuurdomeinen met 
 gegevens %>%
   group_by(Jaartal) %>%
   summarise(Oppervlakte = sum(Oppervlakte)) -> totaal
-p <- ggplot(totaal, aes(x = Jaartal, y = Oppervlakte)) +
+ggplot(totaal, aes(x = Jaartal, y = Oppervlakte)) +
   geom_line() +
   ylim(c(0, NA)) +
   ylab("Totale oppervlakte (ha)") +
   theme(
     axis.title.x = element_blank()
   )
-ggplotly(p)
 ```
 
 ### Oppervlakte per type
@@ -93,7 +92,7 @@ ggplotly(p)
 
 ## Bespreking 
 
-In 2018 bedroeg de oppervlakte 'met effectief natuurbeheer' 89.202 ha. 
+In 2019 bedroeg de oppervlakte 'met effectief natuurbeheer' 82.202 ha. 
 Dat is een toename met 4.748 ha t.o.v. 2017. 
 De oppervlakte nam in 2018 toe bij de bossen in eigendom van derden met een goedgekeurd beheerplan (+ 2097 ha) en de erkende natuurreservaten (+ 557 ha). 
 Nieuw sinds 2018 zijn de gebieden met een natuurbeheerplan type 2 (+ 1312 ha), 3 (+ 696 ha) en 4 (+ 382 ha). 

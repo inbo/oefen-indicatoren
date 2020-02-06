@@ -1,7 +1,5 @@
 # oefen-indicatoren
 
-toevoeging zin in branch Aanpassing-natuurbeheer-Maarten
-
 In deze repository kan je het beheer van de indicatoren oefenen. 
 Gebruik uitsluitend oude versies (reeds gepubliceerde) van indicatoren!
 
